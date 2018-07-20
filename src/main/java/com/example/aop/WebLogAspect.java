@@ -20,7 +20,6 @@ import com.example.util.JSONResult;
 @Aspect
 @Component
 public class WebLogAspect {
-    //日志
     private Logger logger = LoggerFactory.getLogger(getClass());
     
     @Pointcut("execution(public * com.example.controller..*.*(..))")
