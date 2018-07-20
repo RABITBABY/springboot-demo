@@ -21,7 +21,7 @@ import com.example.util.JSONResult;
 @Component
 public class WebLogAspect {
     private Logger logger = LoggerFactory.getLogger(getClass());
-    
+    //dd
     @Pointcut("execution(public * com.example.controller..*.*(..))")
     public void webLog(){
         
