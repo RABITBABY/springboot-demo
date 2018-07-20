@@ -1,0 +1,138 @@
+package ${package.Controller};
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+import org.springframework.beans.factory.annotation.Autowired;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import ${package.Service}.${table.serviceName};
+import com.example.util.JSONResult;
+import ${package.Entity}.${entity};
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import io.swagger.annotations.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *code is far away from bug with the animal protecting
+ *　　
+ *   @description : ${entity} 控制器
+ *   ---------------------------------
+ * 	 @author ${author}
+ *   @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@Api(value="#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end", description="${entity} 控制器")
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+    private final Logger logger = LoggerFactory.getLogger(${table.controllerName}.class);
+
+    @Autowired
+    public ${table.serviceName} ${table.entityPath}Service;
+
+    /**
+     * @description : 获取分页列表
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+    @GetMapping("/get${entity}List")
+    @ApiOperation(value="/get${entity}List", notes="获取分页列表")
+    public JSONResult<Map<String, Object>> get${entity}List(@ApiParam(name="${entity}",value="${entity} 实体类")${entity} param ,
+                                @ApiParam(name="length",value="页大小",required=true,defaultValue = "10")Integer length,
+                                @ApiParam(name="pageNo",value="页数",required=true,defaultValue = "1")Integer pageNo) throws Exception{
+            JSONResult<Map<String, Object>> resJson=new JSONResult<Map<String, Object>>();
+            Page<${entity}> page=new Page<${entity}>(pageNo,length);
+            ${table.entityPath}Service.selectPageWithParam(page, param);
+            Map<String,Object> map=new HashMap<>();
+            map.put("total", page.getTotal());
+            map.put("list", page.getRecords());
+            resJson.setData(map);
+            resJson.setStatus(0);
+            return resJson;
+    }
+
+    /**
+     * @description : 通过id获取${entity}
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+    @GetMapping("/get${entity}ById")
+    @ApiOperation(value="/get${entity}ById", notes="通过id获取${entity}")
+    public JSONResult<${entity}> get${entity}ById(@ApiParam(name="id",value="${entity}ID",required=true)Long id) throws Exception{
+            JSONResult<${entity}> resJson = new JSONResult<>();
+            ${entity} param= ${table.entityPath}Service.selectOneByObj(id);
+            resJson.setData(param);
+            resJson.setStatus(0);
+            return resJson;
+    }
+
+    /**
+     * @description : 通过id删除${entity}
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+    @DeleteMapping("/delete${entity}ById")
+    @ApiOperation(value="/delete${entity}ById", notes="通过id删除${entity}")
+    public JSONResult<${entity}> delete${entity}ById(@ApiParam(name="id",value="${entity}ID",required=true)Long id) throws Exception{
+            JSONResult<${entity}> resJson = new JSONResult<>();
+            boolean boo=${table.entityPath}Service.deleteById(id);
+            resJson.setStatus(boo?0:1);
+            return resJson;
+    }
+
+    /**
+     * @description : 通过id更新${entity}
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+    @PutMapping("/update${entity}ById")
+    @ApiOperation(value="/update${entity}ById", notes="通过id更新${entity}")
+    public JSONResult<${entity}> update${entity}ById(@ApiParam(name="${entity}",value="${entity} 实体类")${entity} param) throws Exception{
+            JSONResult<${entity}> resJson = new JSONResult<>();
+            boolean boo=${table.entityPath}Service.updateById(param);
+            resJson.setStatus(boo?0:1);
+            return resJson;
+    }
+
+    /**
+     * @description : 添加${entity}
+     * ---------------------------------
+     * @author : ${author}
+     * @since : Create in ${date}
+     */
+	@PutMapping("/add${entity}")
+    @ApiOperation(value="/add${entity}", notes="添加${entity}")
+    public JSONResult<${entity}> add${entity}(@ApiParam(name="${entity}",value="${entity} 实体类")${entity} param) throws Exception{
+            JSONResult<${entity}> resJson = new JSONResult<>();
+            boolean boo=${table.entityPath}Service.insert(param);
+            resJson.setStatus(boo?0:1);
+            return resJson;
+    }
+}

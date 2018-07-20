@@ -1,0 +1,15 @@
+package ${package.Service};
+
+import ${package.Entity}.${entity};
+import ${superServiceClassPackage};
+
+/**
+ *code is far away from bug with the animal protecting
+ *   @description : ${entity} 服务接口
+ *   ---------------------------------
+ * 	 @author ${author}
+ *   @since ${date}
+ */
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+	
+}

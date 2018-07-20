@@ -1,0 +1,20 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+import ${superMapperClassPackage};
+import org.springframework.stereotype.Repository;
+import com.baomidou.mybatisplus.plugins.Page;
+
+import java.util.List;
+
+/**
+ *code is far away from bug with the animal protecting
+ *   @description : ${entity} Mapper 接口
+ *   ---------------------------------
+ * 	 @author ${author}
+ *   @since ${date}
+ */
+@Repository
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+
+}
